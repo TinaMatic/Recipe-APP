@@ -1,4 +1,4 @@
-package com.example.recipe.showAllRecipe
+package com.example.recipe.ui.search
 
 
 import android.os.Bundle
@@ -12,14 +12,14 @@ import com.example.recipe.R
 /**
  * A simple [Fragment] subclass.
  */
-class ShowAllRecipeFragment : Fragment() {
+class SearchFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_show_all_recipe, container, false)
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
 
