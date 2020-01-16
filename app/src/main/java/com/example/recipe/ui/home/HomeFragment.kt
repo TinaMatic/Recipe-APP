@@ -1,4 +1,4 @@
-package com.example.recipe.home
+package com.example.recipe.ui.home
 
 
 import android.os.Bundle

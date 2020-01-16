@@ -33,6 +33,9 @@ ext {
 
     //picasso
     picasso_version = '2.5.2'
+
+    //dagger
+    dagger2_version = '2.17'
 }
 
 allprojects {
