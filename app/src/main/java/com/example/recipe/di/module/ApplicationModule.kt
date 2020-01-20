@@ -1,8 +1,8 @@
 package com.example.recipe.di.module
 
 import android.content.Context
+import com.example.recipe.constants.Constants.Companion.BASE_URL
 import com.example.recipe.service.RecipeApi
-import com.example.recipe.service.RetrofitInstance
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -15,7 +15,6 @@ import javax.inject.Singleton
 @Module
 class ApplicationModule(private val context: Context) {
 
-    private val BASE_URL: String = "https://api.edamam.com/"
 
     @Provides
     @Singleton

@@ -1,4 +1,7 @@
 package com.example.recipe.ui.showAllRecipe
 
-class ShowAllRecipeViewModel {
+import androidx.lifecycle.ViewModel
+import javax.inject.Inject
+
+class ShowAllRecipeViewModel @Inject constructor(): ViewModel() {
 }

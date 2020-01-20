@@ -1,34 +1,39 @@
 package com.example.recipe.ui.home
 
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.recipe.R
-import com.example.recipe.data.RecipeRepository
-import com.example.recipe.model.RecipeResponse
-import com.example.recipe.service.RecipeApi
-import com.example.recipe.service.RetrofitInstance
+import com.example.recipe.base.ViewModelFactory
+import com.example.recipe.model.Hits
 import com.squareup.picasso.Picasso
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.nav_header_main.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : DaggerFragment() {
 
-    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
-    
-    private val repository: RecipeRepository = RecipeRepository(RetrofitInstance.getService())
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+
+    private lateinit var homeViewModel : HomeViewModel
+
+    private var homeAdapter: HomeAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,39 +42,50 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
 
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var allLabels = ""
+//        var allLabels = ""
 
-        compositeDisposable.add(
-            repository.getRecipes()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .flatMapIterable {
-                Log.d("Hits", it.hits.toString())
-                it.hits
-            }
-            .subscribe ({
-                Log.d("api response", it.toString())
-                allLabels += "${it.recipe.label} "
-                textViewHome.text = allLabels
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
-                Log.d("Image", it.recipe.image)
-                Picasso.with(context)
-                    .load(it.recipe.image)
-                    .placeholder(R.drawable.recipes)
-                    .into(imageHomeFragment)
-            },{error->
-                Log.d("Error for api call", error.toString())
-            }))
+        getRecipes()
 
+        swipeLayout.setColorSchemeResources(R.color.colorPrimary)
+        swipeLayout.setOnRefreshListener {
+            getRecipes()
+            swipeLayout.isRefreshing = false
+        }
+
+    }
+
+    private fun getRecipes(){
+        homeViewModel.getAllRecipes().observe(this, Observer {
+            showRecipe(it)
+            progressBarHome.visibility = View.GONE
+        })
+    }
+
+    private fun showRecipe(hitsList: List<Hits>){
+        homeAdapter = HomeAdapter(context!!, hitsList)
+
+        if(this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+            recyclerViewHome.layoutManager = (GridLayoutManager(context, 2))
+        } else{
+            recyclerViewHome.layoutManager = (GridLayoutManager(context, 4))
+        }
+
+        recyclerViewHome.itemAnimator = DefaultItemAnimator()
+        recyclerViewHome.adapter = homeAdapter
+
+        homeAdapter?.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        compositeDisposable.clear()
+        homeViewModel.clear()
     }
 }
