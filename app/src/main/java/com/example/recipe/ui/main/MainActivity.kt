@@ -1,16 +1,15 @@
-package com.example.recipe
+package com.example.recipe.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.recipe.R
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,8 +29,10 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_recipe,
-                R.id.nav_search, R.id.nav_settings
+                R.id.nav_home,
+                R.id.nav_recipe,
+                R.id.nav_search,
+                R.id.nav_settings
             ), drawer_layout)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
