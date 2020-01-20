@@ -21,10 +21,6 @@ class RecipeRepository @Inject constructor(private val api: RecipeApi) {
     var recipeLiveData : MutableLiveData<List<Hits>> = MutableLiveData()
     var recipes: ArrayList<Hits> = arrayListOf()
 
-    fun getRecipesResponse(): Observable<RecipeResponse>{
-        return api.getRecipes(Constants.API_KEY_RECIPE_SEARCH, Constants.APP_ID_RECIPE_SEARCH, Constants.Q_PARAMETER)
-    }
-
     init {
         compositeDisposable.add(
             getRecipesResponse()
@@ -41,6 +37,11 @@ class RecipeRepository @Inject constructor(private val api: RecipeApi) {
                     recipeLiveData.postValue(recipes)
                 }))
     }
+
+    fun getRecipesResponse(): Observable<RecipeResponse>{
+        return api.getRecipes(Constants.API_KEY_RECIPE_SEARCH, Constants.APP_ID_RECIPE_SEARCH, Constants.Q_PARAMETER)
+    }
+
 
     fun clear(){
         compositeDisposable.clear()
