@@ -12,7 +12,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     lateinit var recipeRepository: RecipeRepository
 
     fun getAllRecipes(): LiveData<List<Hits>>{
-        return recipeRepository.getRecipes()
+        return recipeRepository.recipeLiveData
     }
 
     fun clear(){
