@@ -3,24 +3,22 @@ package com.example.recipe.ui.home
 
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recipe.R
-import com.example.recipe.base.ViewModelFactory
 import com.example.recipe.model.Hits
-import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
+
 
 /**
  * A simple [Fragment] subclass.
@@ -48,8 +46,6 @@ class HomeFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        var allLabels = ""
-
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
         getRecipes()
@@ -71,15 +67,19 @@ class HomeFragment : DaggerFragment() {
 
     private fun showRecipe(hitsList: List<Hits>){
         homeAdapter = HomeAdapter(context!!, hitsList)
+        val spacesItemDecoration = SpacesItemDecoration(10)
 
         if(this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-            recyclerViewHome.layoutManager = (GridLayoutManager(context, 2))
+//            recyclerViewHome.layoutManager = (GridLayoutManager(context, 2))
+            recyclerViewHome.layoutManager = (StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))
         } else{
             recyclerViewHome.layoutManager = (GridLayoutManager(context, 4))
         }
 
         recyclerViewHome.itemAnimator = DefaultItemAnimator()
+        recyclerViewHome.addItemDecoration(spacesItemDecoration)
         recyclerViewHome.adapter = homeAdapter
+
 
         homeAdapter?.notifyDataSetChanged()
     }
