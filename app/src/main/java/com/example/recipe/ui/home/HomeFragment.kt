@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recipe.R
-import com.example.recipe.model.Hits
+import com.example.recipe.model.recipeSearchModel.HitsSearch
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -65,8 +65,8 @@ class HomeFragment : DaggerFragment() {
         })
     }
 
-    private fun showRecipe(hitsList: List<Hits>){
-        homeAdapter = HomeAdapter(context!!, hitsList)
+    private fun showRecipe(hitsSearchList: List<HitsSearch>){
+        homeAdapter = HomeAdapter(context!!, hitsSearchList)
         val spacesItemDecoration = SpacesItemDecoration(10)
 
         if(this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){

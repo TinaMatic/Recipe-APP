@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe.R
-import com.example.recipe.model.Hits
+import com.example.recipe.model.recipeSearchModel.HitsSearch
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_list_item.view.*
 
-class HomeAdapter(private val context: Context, private val hitsList: List<Hits>):
+class HomeAdapter(private val context: Context, private val hitsSearchList: List<HitsSearch>):
     RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,22 +19,22 @@ class HomeAdapter(private val context: Context, private val hitsList: List<Hits>
     }
 
     override fun getItemCount(): Int {
-        return hitsList.size
+        return hitsSearchList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(hitsList[position])
+        holder.bindItem(hitsSearchList[position])
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun bindItem(hits: Hits){
+        fun bindItem(hitsSearch: HitsSearch){
             Picasso.with(context)
-                .load(hits.recipe.image)
+                .load(hitsSearch.recipe.image)
                 .placeholder(R.drawable.recipes)
                 .into(itemView.imageViewRecipe)
 
-            itemView.recipeTitle.text = hits.recipe.label
+            itemView.recipeTitle.text = hitsSearch.recipe.label
         }
     }
 }
