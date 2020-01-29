@@ -8,6 +8,7 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -50,21 +51,35 @@ class SearchFragment : DaggerFragment() {
 
         btnSearch.setOnClickListener {
             searchedRecipeData = etSearchRecipe.text.toString()
-            getAllRecipes(searchedRecipeData!!)
+            searchViewModel.getAllRecipes(searchedRecipeData!!)
             searchAdapter?.notifyDataSetChanged()
+
         }
 
-//        getAllRecipes()
+        getAllRecipes()
     }
 
-    fun getAllRecipes(searchedRecipe: String){
-        searchViewModel.getAllRecipes(searchedRecipe)
+    fun getAllRecipes(){
         searchViewModel.recipeLiveData.observe(this, Observer {
-//            if (!it.isNullOrEmpty()){
                 showRecipes(it)
                 showProgressBar(false)
                 searchAdapter?.notifyDataSetChanged()
-//            }
+        })
+
+        searchViewModel.recipeLoadingError.observe(this, Observer {isError->
+            if(isError){
+                Toast.makeText(context, "Something wrong happend", Toast.LENGTH_LONG).show()
+            }
+        })
+
+        searchViewModel.recipeLoading.observe(this, Observer {isLoading->
+            if(isLoading != null){
+                showProgressBar(isLoading)
+                if(isLoading){
+                    recyclerViewSearch.visibility = View.GONE
+                    clNoResultSearch.visibility = View.GONE
+                }
+            }
 
         })
     }

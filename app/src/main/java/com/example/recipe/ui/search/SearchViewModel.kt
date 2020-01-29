@@ -1,7 +1,6 @@
 package com.example.recipe.ui.search
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.recipe.data.RecipeSearchRepository
@@ -17,14 +16,19 @@ class SearchViewModel @Inject constructor() : ViewModel() {
     lateinit var recipeSearchRepository: RecipeSearchRepository
 
     var recipes: ArrayList<HitsSearch> = arrayListOf()
+
     var recipeLiveData : MutableLiveData<List<HitsSearch>> = MutableLiveData()
+    var recipeLoadingError : MutableLiveData<Boolean> = MutableLiveData()
+    var recipeLoading : MutableLiveData<Boolean> = MutableLiveData()
 
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    fun getAllRecipes(searchedRecipe: String){
+    fun getAllRecipes(searchedRecipe: String?){
         recipes.clear()
+        recipeLoading.value = true
+
         compositeDisposable.add(
-            recipeSearchRepository.getRecipesResponse(searchedRecipe)
+            recipeSearchRepository.getRecipesResponse(searchedRecipe!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMapIterable {
@@ -33,9 +37,13 @@ class SearchViewModel @Inject constructor() : ViewModel() {
                 .subscribe ({
                     recipes.add(it)
                 },{error->
+                    recipeLoadingError.value = true
+                    recipeLoading.value = false
                     Log.d("Error for api call", error.toString())
                 },{
                     recipeLiveData.postValue(recipes)
+                    recipeLoadingError.value = false
+                    recipeLoading.value = false
                 }))
 
 //        return recipeLiveData
