@@ -48,37 +48,61 @@ class HomeFragment : DaggerFragment() {
 
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        getRecipes()
 
+
+//        homeViewModel.getAllRecipes()
+
+        getRecipes()
         swipeLayout.setColorSchemeResources(R.color.colorPrimary)
         swipeLayout.setOnRefreshListener {
+//            homeViewModel.getAllRecipes()
+//            homeAdapter?.notifyDataSetChanged()
             getRecipes()
+            homeAdapter?.notifyDataSetChanged()
             swipeLayout.isRefreshing = false
         }
 
+//        getRecipes()
     }
 
     private fun getRecipes(){
-        homeViewModel.getAllRecipes().observe(this, Observer {
-            showRecipe(it)
-            progressBarHome.visibility = View.GONE
+        homeViewModel.getAllRecipes()
+//        homeViewModel.recipes.clear()
+        homeViewModel.recipeLiveData.observe(this, Observer {
+            if(!it.isNullOrEmpty()){
+                showRecipe(it)
+                showProgressBar(false)
+
+                homeAdapter?.notifyDataSetChanged()
+            }
+
         })
+    }
+
+    fun showProgressBar(show: Boolean){
+        if (progressBarHome != null){
+            if (show){
+                progressBarHome.visibility = View.VISIBLE
+            }else{
+                progressBarHome.visibility = View.GONE
+            }
+        }
     }
 
     private fun showRecipe(hitsSearchList: List<HitsSearch>){
         homeAdapter = HomeAdapter(context!!, hitsSearchList)
-        val spacesItemDecoration = SpacesItemDecoration(10)
+        val spacesItemDecoration = SpacesItemDecoration(30)
 
         if(this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
 //            recyclerViewHome.layoutManager = (GridLayoutManager(context, 2))
-            recyclerViewHome.layoutManager = (StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))
+            recyclerViewHome?.layoutManager = (StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))
         } else{
-            recyclerViewHome.layoutManager = (GridLayoutManager(context, 4))
+            recyclerViewHome?.layoutManager = (GridLayoutManager(context, 4))
         }
 
-        recyclerViewHome.itemAnimator = DefaultItemAnimator()
-        recyclerViewHome.addItemDecoration(spacesItemDecoration)
-        recyclerViewHome.adapter = homeAdapter
+        recyclerViewHome?.itemAnimator = DefaultItemAnimator()
+//        recyclerViewHome?.addItemDecoration(spacesItemDecoration)
+        recyclerViewHome?.adapter = homeAdapter
 
 
         homeAdapter?.notifyDataSetChanged()

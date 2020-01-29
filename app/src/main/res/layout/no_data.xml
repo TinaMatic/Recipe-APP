@@ -25,7 +25,7 @@
         android:id="@+id/tvNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is a placeholder for employer no data text"
+        android:text="This is a placeholder for no recipe text"
         android:textColor="@color/gray"
         android:textSize="16sp"
         android:gravity="center"

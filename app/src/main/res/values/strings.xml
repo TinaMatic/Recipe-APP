@@ -7,13 +7,14 @@
 
 
     <string name="menu_home">Home</string>
-    <string name="menu_recipe">All Recipes</string>
+    <string name="menu_favourites">Favourites</string>
     <string name="menu_search">Search</string>
     <string name="menu_settings">Settings</string>
 
     <!--    SEARCH SCREEN-->
     <string name="search_filed">Enter recipe to search for</string>
     <string name="btn_search">Search</string>
+    <string name="no_recipe">No recipe with that search. Please update your search</string>
 
     <!--    NO DATA-->
     <string name="no_data_header">No result</string>
