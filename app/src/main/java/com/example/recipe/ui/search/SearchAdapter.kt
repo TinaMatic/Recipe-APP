@@ -33,7 +33,7 @@ class SearchAdapter(val context: Context, val recipeHitsList: List<HitsSearch>):
                 val selectedRecipe: HitsSearch = recipeHitsList[position]
 
                 val intent = Intent(context, RecipeInfo::class.java)
-                intent.putExtra("recipe", selectedRecipe as Serializable)
+                intent.putExtra("recipe", selectedRecipe)
                 context.startActivity(intent)
             }
         }

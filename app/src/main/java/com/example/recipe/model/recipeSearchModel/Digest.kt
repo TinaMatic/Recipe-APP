@@ -1,4 +1,5 @@
 package com.example.recipe.model.recipeSearchModel
 
-class Digest {
-}
+import java.io.Serializable
+
+class Digest(): Serializable
