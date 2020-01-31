@@ -3,13 +3,21 @@
     <string name="nav_header_desc">Recipe</string>
     <string name="nav_header_title">Recipe app</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
-<!--    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>-->
+    <!--    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>-->
 
 
     <string name="menu_home">Home</string>
-    <string name="menu_recipe">All Recipes</string>
+    <string name="menu_favourites">Favourites</string>
     <string name="menu_search">Search</string>
     <string name="menu_settings">Settings</string>
+
+    <!--    SEARCH SCREEN-->
+    <string name="search_filed">Enter recipe to search for</string>
+    <string name="btn_search">Search</string>
+    <string name="no_recipe">No recipe with that search. Please update your search</string>
+
+    <!--    NO DATA-->
+    <string name="no_data_header">No result</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
