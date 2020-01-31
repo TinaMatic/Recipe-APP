@@ -7,10 +7,9 @@ import com.example.recipe.di.annotation.ViewModelKey
 import com.example.recipe.settings.SettingsViewModel
 import com.example.recipe.ui.home.HomeViewModel
 import com.example.recipe.ui.search.SearchViewModel
-import com.example.recipe.ui.showAllRecipe.ShowAllRecipeViewModel
+import com.example.recipe.ui.favourites.FavouritesViewModel
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Module
@@ -33,8 +32,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ShowAllRecipeViewModel::class)
-    abstract fun bindShowAllRecipeViewModel(showAllRecipeViewModel: ShowAllRecipeViewModel): ViewModel
+    @ViewModelKey(FavouritesViewModel::class)
+    abstract fun bindFavouritesViewModel(favouritesViewModel: FavouritesViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
