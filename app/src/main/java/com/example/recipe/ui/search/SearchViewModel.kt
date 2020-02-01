@@ -15,15 +15,15 @@ class SearchViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var recipeSearchRepository: RecipeSearchRepository
 
-    var recipes: ArrayList<HitsSearch> = arrayListOf()
+    private var recipes: ArrayList<HitsSearch> = arrayListOf()
 
-    var recipeLiveData : MutableLiveData<List<HitsSearch>> = MutableLiveData()
-    var recipeLoadingError : MutableLiveData<Boolean> = MutableLiveData()
-    var recipeLoading : MutableLiveData<Boolean> = MutableLiveData()
+    var recipeLiveData: MutableLiveData<List<HitsSearch>> = MutableLiveData()
+    var recipeLoadingError: MutableLiveData<Boolean> = MutableLiveData()
+    var recipeLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    fun getAllRecipes(searchedRecipe: String?){
+    fun getAllRecipes(searchedRecipe: String?) {
         recipes.clear()
         recipeLoading.value = true
 
@@ -34,24 +34,22 @@ class SearchViewModel @Inject constructor() : ViewModel() {
                 .flatMapIterable {
                     it.hits
                 }
-                .subscribe ({
+                .subscribe({
                     recipes.add(it)
-                },{error->
+                    recipeLoadingError.value = false
+                }, { error ->
                     recipeLoadingError.value = true
                     recipeLoading.value = false
                     Log.d("Error for api call", error.toString())
-                },{
+                }, {
                     recipeLiveData.postValue(recipes)
                     recipeLoadingError.value = false
                     recipeLoading.value = false
-                }))
-
-//        return recipeLiveData
-//        return recipeSearchRepository.recipeLiveData
+                })
+        )
     }
 
-    fun clear(){
+    fun clear() {
         compositeDisposable.clear()
-//        recipeSearchRepository.clear()
     }
 }
