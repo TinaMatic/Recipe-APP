@@ -66,9 +66,11 @@ class HomeFragment : DaggerFragment() {
             randomIngredient = IngredientUtil.INGREDIENT[randomIngredientPosition]
             Log.d("Ingredient ", randomIngredient.toString())
 
-            Handler().postDelayed({
-                getRecipes(randomIngredient!!)
-            }, 2000)
+            getRecipes(randomIngredient!!)
+
+//            Handler().postDelayed({
+//                getRecipes(randomIngredient!!)
+//            }, 2000)
         }
 
 
@@ -83,9 +85,11 @@ class HomeFragment : DaggerFragment() {
                 randomIngredient = IngredientUtil.INGREDIENT[randomIngredientPosition]
                 Log.d("Ingredient ", randomIngredient.toString())
 
-                Handler().postDelayed({
-                    getRecipes(randomIngredient!!)
-                }, 2000)
+                getRecipes(randomIngredient!!)
+
+//                Handler().postDelayed({
+//                    getRecipes(randomIngredient!!)
+//                }, 2000)
             }
 
             swipeLayout.isRefreshing = false
