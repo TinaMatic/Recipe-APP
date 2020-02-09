@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="?attr/actionBarSize"
             android:clipToPadding="false"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            tools:listitem="@layout/recipe_list_item"/>
 
         <ProgressBar
             android:id="@+id/progressBarHome"
