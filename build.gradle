@@ -36,6 +36,9 @@ ext {
 
     //dagger
     dagger2_version = '2.17'
+
+    //room
+    room_version = "2.2.3"
 }
 
 allprojects {
