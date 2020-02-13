@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recipe.R
+import com.example.recipe.database.RecipeDao
+import com.example.recipe.database.RecipeDatabase
 import com.example.recipe.model.recipeSearchModel.HitsSearch
 import com.example.recipe.util.IngredientUtil
 import dagger.android.support.DaggerFragment
@@ -41,6 +43,9 @@ class HomeFragment : DaggerFragment() {
 
     private var randomIngredient: String? = null
 
+    private var db: RecipeDatabase? = null
+    private var recipeDao: RecipeDao? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +54,6 @@ class HomeFragment : DaggerFragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +61,8 @@ class HomeFragment : DaggerFragment() {
 
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
+        db = RecipeDatabase.getInstance(context!!)
+        recipeDao = db?.recipeDao()
 
 
         for (i in 0..4) {
