@@ -38,7 +38,7 @@
                 android:textSize="15sp"/>
 
             <com.example.recipe.ui.base.CheckableImageView
-                android:id="@+id/ivFavouriteRecipeList"
+                android:id="@+id/ivFavouriteRecipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

@@ -4,13 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TimePicker
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe.R
+import com.example.recipe.database.RecipeDatabase
+import com.example.recipe.database.RecipeTable
 import com.example.recipe.model.recipeSearchModel.HitsSearch
+import com.example.recipe.ui.base.CheckableImageView
 import com.squareup.picasso.Picasso
+import io.reactivex.Maybe
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.recipe_list_item.view.*
 
-class HomeAdapter(private val context: Context, private val hitsSearchList: List<HitsSearch>):
+class HomeAdapter(private val context: Context, private val hitsSearchList: List<HitsSearch>,
+                  val onFavouriteItemClick: OnFavouriteItemClick):
     RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,6 +35,13 @@ class HomeAdapter(private val context: Context, private val hitsSearchList: List
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItem(hitsSearchList[position])
+
+        val recipe = RecipeTable(hitsSearchList[position].recipe.label, hitsSearchList[position].recipe.image!!)
+
+        holder.itemView.ivFavouriteRecipe.setOnClickListener {
+            (it as CheckableImageView).toggle()
+            onFavouriteItemClick.updateFavouriteClick(recipe, holder.itemView.ivFavouriteRecipe.isChecked)
+        }
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

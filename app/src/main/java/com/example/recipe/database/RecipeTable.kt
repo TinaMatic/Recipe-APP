@@ -5,8 +5,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "recipes")
-data class RecipeTable(
-    @PrimaryKey(autoGenerate = true) var id: Long = 0,
+class RecipeTable(
     @ColumnInfo(name = "label") var label: String,
-    @ColumnInfo(name = "image") var image: String,
-    @ColumnInfo(name = "isFavourite") var isFavourite: Int = 0)
+    @ColumnInfo(name = "image") var image: String){
+
+    @PrimaryKey(autoGenerate = true) var id: Long? = null
+}
