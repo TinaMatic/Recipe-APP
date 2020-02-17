@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recipe.R
 import com.example.recipe.database.RecipeDao
 import com.example.recipe.database.RecipeDatabase
+import com.example.recipe.database.RecipeTable
 import com.example.recipe.model.recipeSearchModel.HitsSearch
 import com.example.recipe.util.IngredientUtil
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.recipe_list_item.*
 import okhttp3.internal.Util
 import javax.inject.Inject
 import kotlin.random.Random
@@ -31,11 +33,10 @@ import kotlin.random.Random
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : DaggerFragment() {
+class HomeFragment : DaggerFragment(), OnFavouriteItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -43,8 +44,12 @@ class HomeFragment : DaggerFragment() {
 
     private var randomIngredient: String? = null
 
-    private var db: RecipeDatabase? = null
-    private var recipeDao: RecipeDao? = null
+    var database: RecipeDao? = null
+
+//    private var db: RecipeDatabase? = null
+//    private var recipeDao: RecipeDao? = null
+//
+//    var recipeList : List<RecipeTable> = listOf()
 
 
     override fun onCreateView(
@@ -61,9 +66,7 @@ class HomeFragment : DaggerFragment() {
 
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        db = RecipeDatabase.getInstance(context!!)
-        recipeDao = db?.recipeDao()
-
+        database = RecipeDatabase.getInstance(context!!).recipeDao()
 
         for (i in 0..4) {
             val randomIngredientPosition = (0..IngredientUtil.INGREDIENT.size - 1).random()
@@ -96,6 +99,7 @@ class HomeFragment : DaggerFragment() {
 
             swipeLayout.isRefreshing = false
         }
+
     }
 
     private fun getRecipes(searchedIngredient: String) {
@@ -120,7 +124,7 @@ class HomeFragment : DaggerFragment() {
         })
     }
 
-    fun showProgressBar(show: Boolean) {
+    private fun showProgressBar(show: Boolean) {
         if (progressBarHome != null) {
             if (show) {
                 progressBarHome.visibility = View.VISIBLE
@@ -131,7 +135,7 @@ class HomeFragment : DaggerFragment() {
     }
 
     private fun showRecipe(hitsSearchList: List<HitsSearch>) {
-        homeAdapter = HomeAdapter(context!!, hitsSearchList)
+        homeAdapter = HomeAdapter(context!!, hitsSearchList, this)
         val spacesItemDecoration = SpacesItemDecoration(30)
 
         if (this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -150,5 +154,9 @@ class HomeFragment : DaggerFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         homeViewModel.clear()
+    }
+
+    override fun updateFavouriteClick(recipeTable: RecipeTable, isFavourite: Boolean) {
+        homeViewModel.updateFavourites(recipeTable, isFavourite, database!!)
     }
 }
