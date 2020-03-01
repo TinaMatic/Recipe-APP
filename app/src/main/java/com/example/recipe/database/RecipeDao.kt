@@ -14,11 +14,11 @@ interface RecipeDao {
     fun insertFavourite(recipes: RecipeTable): Completable
 
     @Query("SELECT * FROM recipes")
-    fun showFavourites(): Flowable<List<RecipeTable>>
+    fun showFavourites(): Observable<List<RecipeTable>>
 
     @Delete
     fun deleteFavourite(recipeTable: RecipeTable): Completable
 
     @Query("SELECT * FROM recipes WHERE label = :label AND image = :image")
-    fun ifFavouriteExists(label: String, image: String): Flowable<List<RecipeTable>>
+    fun ifFavouriteExists(label: String, image: String): Maybe<List<RecipeTable>>
 }

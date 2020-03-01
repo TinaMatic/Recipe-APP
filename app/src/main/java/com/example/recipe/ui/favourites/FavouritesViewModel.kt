@@ -1,9 +1,12 @@
 package com.example.recipe.ui.favourites
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.recipe.data.RoomRepository
 import com.example.recipe.database.RecipeDao
 import com.example.recipe.database.RecipeTable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,12 +19,9 @@ class FavouritesViewModel @Inject constructor(): ViewModel() {
     var favouriteError: MutableLiveData<Boolean> = MutableLiveData()
     var favouriteLoading: MutableLiveData<Boolean> = MutableLiveData()
 
-    private var favouriteRecipes: ArrayList<RecipeTable> = arrayListOf()
-
     private var compositeDisposable = CompositeDisposable()
 
     fun showFavourites(database: RecipeDao){
-        favouriteRecipes.clear()
 
         favouriteLoading.value = true
 
@@ -31,22 +31,18 @@ class FavouritesViewModel @Inject constructor(): ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     favouriteRecipeLiveData.postValue(it)
-//                    it.forEach {
-//                        favouriteRecipes.add(it)
-//                        favouriteError.value = false
-//
-//                    }
                 },{
                     favouriteError.value = true
-//                    favouriteLoading.value = false
-                }
-                    ,{
-//                    favouriteRecipeLiveData.postValue(favouriteRecipes)
+                },{
                     favouriteError.value = false
                     favouriteLoading.value = false
-                }
+                    }
                 )
         )
+    }
+
+    fun removeFavourite(recipe: RecipeTable, database: RecipeDao): Observable<Boolean>{
+        return RoomRepository.removeFavourite(recipe, database)
     }
 
     fun clear(){
