@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe.R
 import com.example.recipe.database.RecipeTable
+import com.example.recipe.ui.base.CheckableImageView
+import com.example.recipe.ui.home.OnFavouriteItemClickHome
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_list_item.view.*
 
-class FavouritesAdapter(private val context: Context,private val favourites: List<RecipeTable>):
+class FavouritesAdapter(private val context: Context,private val favourites: List<RecipeTable>,
+                        val onFavouriteItemClick: OnFavouriteItemClick
+):
     RecyclerView.Adapter<FavouritesAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,6 +28,11 @@ class FavouritesAdapter(private val context: Context,private val favourites: Lis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(favourites[position])
+
+        holder.itemView.ivFavouriteRecipe.setOnClickListener {
+            (it as CheckableImageView).isChecked = false
+            onFavouriteItemClick.removeFavourite(favourites[position])
+        }
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

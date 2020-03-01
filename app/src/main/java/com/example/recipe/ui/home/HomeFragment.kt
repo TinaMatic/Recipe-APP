@@ -23,17 +23,15 @@ import com.example.recipe.database.RecipeTable
 import com.example.recipe.model.recipeSearchModel.HitsSearch
 import com.example.recipe.util.IngredientUtil
 import dagger.android.support.DaggerFragment
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.recipe_list_item.*
-import okhttp3.internal.Util
 import javax.inject.Inject
-import kotlin.random.Random
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : DaggerFragment(), OnFavouriteItemClick {
+class HomeFragment : DaggerFragment(), OnFavouriteItemClickHome {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -46,11 +44,7 @@ class HomeFragment : DaggerFragment(), OnFavouriteItemClick {
 
     var database: RecipeDao? = null
 
-//    private var db: RecipeDatabase? = null
-//    private var recipeDao: RecipeDao? = null
-//
-//    var recipeList : List<RecipeTable> = listOf()
-
+    var compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -154,9 +148,34 @@ class HomeFragment : DaggerFragment(), OnFavouriteItemClick {
     override fun onDestroyView() {
         super.onDestroyView()
         homeViewModel.clear()
+        compositeDisposable.clear()
     }
 
     override fun updateFavouriteClick(recipeTable: RecipeTable, isFavourite: Boolean) {
         homeViewModel.updateFavourites(recipeTable, isFavourite, database!!)
+    }
+
+    override fun insertFavourite(recipe: RecipeTable) {
+        compositeDisposable.add(
+            homeViewModel.insertFavourite(recipe, database!!).subscribe {
+                if (it){
+                    Toast.makeText(context, "Favourite successfully added", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"Something went wrong with adding favourite", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
+    }
+
+    override fun removeFavourite(recipe: RecipeTable) {
+        compositeDisposable.add(
+            homeViewModel.removeFavourite(recipe, database!!).subscribe {
+                if(it){
+                    Toast.makeText(context,"Favourite successfully removed", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"Something went wrong with removing favourite", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
     }
 }
