@@ -19,6 +19,13 @@
     <!--    NO DATA-->
     <string name="no_data_header">No result</string>
 
+    <!--    RecipeInfro SCREEN-->
+    <string name="link_text">Show link for the recipe</string>
+    <string name="diet_labels">Diet Labels:</string>
+    <string name="health_labels">Health Labels:</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="calories">Calories:</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

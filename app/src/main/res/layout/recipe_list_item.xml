@@ -36,6 +36,16 @@
                 android:paddingTop="10dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp"/>
+
+            <com.example.recipe.ui.base.CheckableImageView
+                android:id="@+id/ivFavouriteRecipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:srcCompat="@drawable/favorite_selector"
+                android:layout_below="@id/imageViewRecipe"
+                android:layout_alignParentRight="true"/>
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

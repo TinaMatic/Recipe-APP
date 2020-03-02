@@ -35,6 +35,15 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:scaleType="fitCenter"/>
+
+                <com.example.recipe.ui.base.CheckableImageView
+                    android:id="@+id/imFavouriteRecipeInfo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:padding="15dp"
+                    app:srcCompat="@drawable/favorite_selector"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
             <androidx.appcompat.widget.Toolbar

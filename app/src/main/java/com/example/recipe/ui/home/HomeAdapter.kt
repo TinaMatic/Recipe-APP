@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe.R
+import com.example.recipe.database.RecipeTable
 import com.example.recipe.model.recipeSearchModel.HitsSearch
+import com.example.recipe.ui.base.CheckableImageView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recipe_list_item.view.*
 
-class HomeAdapter(private val context: Context, private val hitsSearchList: List<HitsSearch>):
+class HomeAdapter(private val context: Context, private val hitsSearchList: List<HitsSearch>,
+                  val onFavouriteItemClickHome: OnFavouriteItemClickHome
+):
     RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,6 +28,18 @@ class HomeAdapter(private val context: Context, private val hitsSearchList: List
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItem(hitsSearchList[position])
+
+        holder.itemView.ivFavouriteRecipe.setOnClickListener {
+            val recipe = RecipeTable(hitsSearchList[position].recipe.label, hitsSearchList[position].recipe.image!!)
+            (it as CheckableImageView).toggle()
+//            onFavouriteItemClickHome.updateFavouriteClick(recipe, holder.itemView.ivFavouriteRecipe.isChecked)
+
+            if(holder.itemView.ivFavouriteRecipe.isChecked){
+                onFavouriteItemClickHome.insertFavourite(recipe)
+            }else{
+                onFavouriteItemClickHome.removeFavourite(recipe)
+            }
+        }
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

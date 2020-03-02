@@ -71,4 +71,9 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger2_version"
     compileOnly 'javax.annotation:jsr250-api:1.0'
     implementation 'javax.inject:javax.inject:1'
+
+    //Room Database
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
 }
