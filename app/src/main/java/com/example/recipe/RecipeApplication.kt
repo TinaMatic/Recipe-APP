@@ -3,6 +3,7 @@ package com.example.recipe
 import com.example.recipe.di.component.ApplicationComponent
 import com.example.recipe.di.component.DaggerApplicationComponent
 import com.example.recipe.di.module.ApplicationModule
+import com.facebook.stetho.Stetho
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
@@ -17,6 +18,8 @@ class RecipeApplication: DaggerApplication() {
 
         //inject application instance
         appComponent.inject(this)
+
+        Stetho.initializeWithDefaults(this);
 
         return appComponent
     }

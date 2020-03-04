@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recipe.R
+import com.example.recipe.data.RoomRepository
 import com.example.recipe.database.RecipeDao
 import com.example.recipe.database.RecipeDatabase
 import com.example.recipe.database.RecipeTable
@@ -43,6 +44,7 @@ class HomeFragment : DaggerFragment(), OnFavouriteItemClickHome {
     private var randomIngredient: String? = null
 
     var database: RecipeDao? = null
+    var id: Long? = null
 
     var compositeDisposable = CompositeDisposable()
 
@@ -151,10 +153,6 @@ class HomeFragment : DaggerFragment(), OnFavouriteItemClickHome {
         compositeDisposable.clear()
     }
 
-    override fun updateFavouriteClick(recipeTable: RecipeTable, isFavourite: Boolean) {
-        homeViewModel.updateFavourites(recipeTable, isFavourite, database!!)
-    }
-
     override fun insertFavourite(recipe: RecipeTable) {
         compositeDisposable.add(
             homeViewModel.insertFavourite(recipe, database!!).subscribe {
@@ -167,15 +165,17 @@ class HomeFragment : DaggerFragment(), OnFavouriteItemClickHome {
         )
     }
 
-    override fun removeFavourite(recipe: RecipeTable) {
+    override fun removeFavourite(label: String, image: String) {
         compositeDisposable.add(
-            homeViewModel.removeFavourite(recipe, database!!).subscribe {
+            homeViewModel.removeFavourite(database!!, label, image).subscribe ({
                 if(it){
                     Toast.makeText(context,"Favourite successfully removed", Toast.LENGTH_SHORT).show()
                 }else{
                     Toast.makeText(context,"Something went wrong with removing favourite", Toast.LENGTH_SHORT).show()
                 }
-            }
+            },{
+                Toast.makeText(context,"Something went wrong with removing favourite", Toast.LENGTH_SHORT).show()
+            })
         )
     }
 }
