@@ -57,16 +57,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    fun updateFavourites(recipe: RecipeTable, isFavourite: Boolean, database: RecipeDao){
-        RoomRepository.updateFavourites(recipe, database, isFavourite)
-    }
-
     fun insertFavourite(recipe: RecipeTable, database: RecipeDao): Observable<Boolean>{
         return RoomRepository.insertFavourite(recipe, database)
     }
 
-    fun removeFavourite(recipe: RecipeTable, database: RecipeDao): Observable<Boolean>{
-        return RoomRepository.removeFavourite(recipe, database)
+    fun removeFavourite(database: RecipeDao, label: String, image: String): Observable<Boolean>{
+        return RoomRepository.removeFavouriteById(database, label, image)
     }
 
     fun clear() {

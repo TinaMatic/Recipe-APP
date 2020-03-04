@@ -10,6 +10,7 @@ import com.example.recipe.database.RecipeTable
 import com.example.recipe.model.recipeSearchModel.HitsSearch
 import com.example.recipe.ui.base.CheckableImageView
 import com.squareup.picasso.Picasso
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.recipe_list_item.view.*
 
 class HomeAdapter(private val context: Context, private val hitsSearchList: List<HitsSearch>,
@@ -32,12 +33,11 @@ class HomeAdapter(private val context: Context, private val hitsSearchList: List
         holder.itemView.ivFavouriteRecipe.setOnClickListener {
             val recipe = RecipeTable(hitsSearchList[position].recipe.label, hitsSearchList[position].recipe.image!!)
             (it as CheckableImageView).toggle()
-//            onFavouriteItemClickHome.updateFavouriteClick(recipe, holder.itemView.ivFavouriteRecipe.isChecked)
 
             if(holder.itemView.ivFavouriteRecipe.isChecked){
                 onFavouriteItemClickHome.insertFavourite(recipe)
             }else{
-                onFavouriteItemClickHome.removeFavourite(recipe)
+                onFavouriteItemClickHome.removeFavourite(hitsSearchList[position].recipe.label, hitsSearchList[position].recipe.image!!)
             }
         }
     }
